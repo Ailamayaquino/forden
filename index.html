@@ -1,0 +1,1537 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>A Little Something</title>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=Playfair+Display:ital,wght@0,500;0,600;1,500&display=swap');
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+:root {
+    --bg: #f5f3ed;
+    --card: rgba(255,255,255,.88);
+    --green: #254c40;
+    --green2: #dce9e2;
+    --text: #242824;
+    --muted: #777c77;
+}
+
+body {
+    min-height: 100vh;
+    background:
+        radial-gradient(circle at 10% 15%, #e1ece6, transparent 30%),
+        radial-gradient(circle at 90% 85%, #ebe2d7, transparent 30%),
+        var(--bg);
+
+    font-family: "DM Sans", sans-serif;
+    color: var(--text);
+    overflow-x: hidden;
+}
+
+/* floating background */
+
+.blob {
+    position: fixed;
+    border-radius: 50%;
+    pointer-events: none;
+    opacity: .25;
+    filter: blur(2px);
+    animation: drift 8s ease-in-out infinite;
+}
+
+.blob.one {
+    width: 180px;
+    height: 180px;
+    background: #bcd4c9;
+    top: -70px;
+    left: -50px;
+}
+
+.blob.two {
+    width: 130px;
+    height: 130px;
+    background: #dfcdbb;
+    bottom: 5%;
+    right: -30px;
+    animation-delay: 2s;
+}
+
+@keyframes drift {
+    50% {
+        transform: translateY(-25px);
+    }
+}
+
+/* main */
+
+.wrapper {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 18px;
+}
+
+.card {
+    width: 100%;
+    max-width: 560px;
+    min-height: 650px;
+
+    background: var(--card);
+    backdrop-filter: blur(18px);
+
+    border-radius: 30px;
+
+    padding: 40px;
+
+    box-shadow:
+        0 30px 80px rgba(40,50,45,.12);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    position: relative;
+    overflow: hidden;
+}
+
+.screen {
+    width: 100%;
+    text-align: center;
+    animation: enter .6s ease;
+}
+
+.hidden {
+    display: none !important;
+}
+
+@keyframes enter {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* typography */
+
+.eyebrow {
+    font-size: 10px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 20px;
+}
+
+h1 {
+    font-family: "Playfair Display", serif;
+    font-size: clamp(42px, 9vw, 64px);
+    line-height: 1;
+    font-weight: 500;
+    margin-bottom: 25px;
+}
+
+h1 em {
+    color: var(--green);
+}
+
+h2 {
+    font-family: "Playfair Display", serif;
+    font-size: clamp(30px, 7vw, 43px);
+    font-weight: 500;
+    line-height: 1.15;
+    margin-bottom: 20px;
+}
+
+.description {
+    max-width: 390px;
+    margin: auto;
+    color: var(--muted);
+    font-size: 14px;
+    line-height: 1.8;
+}
+
+/* buttons */
+
+.primary {
+    margin-top: 30px;
+
+    background: var(--green);
+    color: white;
+
+    border: none;
+    border-radius: 50px;
+
+    padding: 15px 30px;
+
+    font-size: 14px;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition: .3s;
+}
+
+.primary:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 25px rgba(37,76,64,.2);
+}
+
+.options {
+    display: flex;
+    flex-direction: column;
+    gap: 11px;
+    margin-top: 30px;
+}
+
+.option {
+    background: white;
+    border: 1px solid #dedfd9;
+    border-radius: 15px;
+
+    padding: 16px;
+
+    font-size: 14px;
+
+    cursor: pointer;
+
+    transition: .25s;
+}
+
+.option:hover {
+    background: var(--green2);
+    border-color: var(--green);
+    transform: translateX(5px);
+}
+
+/* progress */
+
+.progress {
+    width: 100%;
+    height: 4px;
+    background: #e5e5df;
+    border-radius: 10px;
+    margin-bottom: 35px;
+    overflow: hidden;
+}
+
+.progress-fill {
+    height: 100%;
+    width: 25%;
+    background: var(--green);
+    transition: .5s;
+}
+
+/* =========================
+   GAME 1
+========================= */
+
+.game-icon {
+    font-size: 48px;
+    margin-bottom: 20px;
+}
+
+.game-note {
+    color: var(--muted);
+    font-size: 12px;
+    margin-top: 18px;
+}
+
+/* =========================
+   GAME 2 - CARDS
+========================= */
+
+.card-choice {
+    display: grid;
+    grid-template-columns: repeat(3,1fr);
+    gap: 12px;
+    margin-top: 30px;
+}
+
+.choice-card {
+    height: 150px;
+
+    background: #fff;
+
+    border: 1px solid #dedfd9;
+    border-radius: 18px;
+
+    cursor: pointer;
+
+    position: relative;
+
+    overflow: hidden;
+
+    transition: .3s;
+}
+
+.choice-card:hover {
+    transform: translateY(-7px) rotate(1deg);
+    border-color: var(--green);
+}
+
+.card-front {
+    height: 100%;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-family: "Playfair Display", serif;
+    font-size: 35px;
+
+    color: var(--green);
+}
+
+.card-back {
+    position: absolute;
+    inset: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 15px;
+
+    background: var(--green);
+    color: white;
+
+    font-size: 12px;
+    line-height: 1.5;
+
+    opacity: 0;
+
+    transition: .4s;
+}
+
+.choice-card.open .card-back {
+    opacity: 1;
+}
+
+/* =========================
+   GAME 3 - MEMORY
+========================= */
+
+.memory-grid {
+    display: grid;
+    grid-template-columns: repeat(4,1fr);
+    gap: 10px;
+
+    max-width: 330px;
+    margin: 30px auto;
+}
+
+.memory {
+    aspect-ratio: 1;
+
+    border: none;
+    border-radius: 13px;
+
+    background: var(--green);
+
+    color: white;
+
+    font-size: 20px;
+
+    cursor: pointer;
+
+    transition: .25s;
+}
+
+.memory:hover {
+    transform: scale(1.05);
+}
+
+.memory.revealed {
+    background: var(--green2);
+    color: var(--green);
+}
+
+/* =========================
+   FINAL
+========================= */
+
+.final-symbol {
+    width: 70px;
+    height: 70px;
+
+    margin: 0 auto 25px;
+
+    border-radius: 50%;
+
+    background: var(--green2);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 27px;
+
+    animation: pop .7s ease;
+}
+
+@keyframes pop {
+    0% {
+        transform: scale(.4);
+        opacity: 0;
+    }
+
+    70% {
+        transform: scale(1.1);
+    }
+
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+.quote {
+    margin-top: 28px;
+
+    padding: 25px;
+
+    border-left: 2px solid var(--green);
+
+    background: rgba(220,233,226,.35);
+
+    text-align: left;
+
+    font-family: "Playfair Display", serif;
+
+    font-size: 17px;
+
+    line-height: 1.7;
+
+    font-style: italic;
+}
+
+.quote-author {
+    margin-top: 12px;
+
+    font-family: "DM Sans", sans-serif;
+
+    font-size: 11px;
+
+    font-style: normal;
+
+    color: var(--muted);
+
+    letter-spacing: 1px;
+}
+
+/* =========================
+   MUSIC
+========================= */
+
+.album {
+    width: 190px;
+    height: 190px;
+
+    margin: 25px auto;
+
+    border-radius: 20px;
+
+    background:
+        radial-gradient(
+            circle at 30% 25%,
+            #e9eee9,
+            transparent 30%
+        ),
+        linear-gradient(
+            135deg,
+            #66786f,
+            #24382f
+        );
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    color: white;
+
+    font-family: "Playfair Display", serif;
+
+    font-size: 27px;
+
+    font-style: italic;
+
+    box-shadow: 0 20px 45px rgba(0,0,0,.15);
+
+    animation: albumFloat 4s ease-in-out infinite;
+}
+
+@keyframes albumFloat {
+    50% {
+        transform: translateY(-6px);
+    }
+}
+
+.song-title {
+    font-family: "Playfair Display", serif;
+    font-size: 30px;
+}
+
+.artist {
+    color: var(--muted);
+    font-size: 14px;
+    margin-top: 5px;
+}
+
+.song-text {
+    color: var(--muted);
+    max-width: 350px;
+    margin: 20px auto;
+    font-size: 13px;
+    line-height: 1.7;
+}
+
+.song-button {
+    display: inline-block;
+
+    background: var(--green);
+    color: white;
+
+    text-decoration: none;
+
+    padding: 14px 25px;
+
+    border-radius: 50px;
+
+    font-size: 13px;
+    font-weight: 600;
+
+    transition: .3s;
+}
+
+.song-button:hover {
+    transform: translateY(-3px);
+}
+
+/* hearts */
+
+.heart {
+    position: fixed;
+    bottom: -30px;
+
+    color: rgba(37,76,64,.35);
+
+    pointer-events: none;
+
+    animation: heart 6s linear forwards;
+}
+
+@keyframes heart {
+    0% {
+        transform: translateY(0);
+        opacity: 0;
+    }
+
+    15% {
+        opacity: 1;
+    }
+
+    100% {
+        transform: translateY(-110vh) rotate(20deg);
+        opacity: 0;
+    }
+}
+
+/* mobile */
+
+@media(max-width:600px) {
+
+    .wrapper {
+        padding: 12px;
+    }
+
+    .card {
+        min-height: 650px;
+        padding: 30px 21px;
+        border-radius: 24px;
+    }
+
+    .card-choice {
+        gap: 8px;
+    }
+
+    .choice-card {
+        height: 130px;
+    }
+
+    .memory-grid {
+        max-width: 290px;
+    }
+
+    .album {
+        width: 165px;
+        height: 165px;
+    }
+}
+</style>
+</head>
+
+
+<body>
+
+<div class="blob one"></div>
+<div class="blob two"></div>
+
+
+<div class="wrapper">
+
+<div class="card">
+
+
+<!-- ==================================================
+     1. INTRO
+================================================== -->
+
+<section class="screen" id="intro">
+
+    <div class="eyebrow">
+        this isn't what you think
+    </div>
+
+    <h1>
+        A little<br>
+        <em>something.</em>
+    </h1>
+
+    <p class="description">
+
+        I was going to make something normal.
+
+        <br><br>
+
+        Then I thought that would be boring.
+
+        <br><br>
+
+        So... let's play a few games.
+
+    </p>
+
+    <button
+        class="primary"
+        onclick="start()">
+
+        Let's go →
+
+    </button>
+
+</section>
+
+
+
+<!-- ==================================================
+     2. GAME 1
+================================================== -->
+
+<section class="screen hidden" id="game1">
+
+    <div class="game-icon">
+        🎮
+    </div>
+
+    <div class="eyebrow">
+        game one
+    </div>
+
+    <h2>
+        A very important question.
+    </h2>
+
+    <p class="description">
+
+        Choose carefully.
+
+        <br>
+
+        Your answer will absolutely
+        not determine your future.
+
+    </p>
+
+    <div class="options">
+
+        <button
+            class="option"
+            onclick="chooseMood('good')">
+
+            I'm doing pretty good.
+
+        </button>
+
+        <button
+            class="option"
+            onclick="chooseMood('okay')">
+
+            I'm okay, I guess.
+
+        </button>
+
+        <button
+            class="option"
+            onclick="chooseMood('tired')">
+
+            Honestly, I'm tired.
+
+        </button>
+
+        <button
+            class="option"
+            onclick="chooseMood('notgood')">
+
+            Not really okay.
+
+        </button>
+
+    </div>
+
+</section>
+
+
+
+<!-- ==================================================
+     3. YES / SURE GAME
+================================================== -->
+
+<section class="screen hidden" id="sureGame">
+
+    <div class="eyebrow">
+        wait a second
+    </div>
+
+    <h2 id="sureQuestion">
+        Are you sure?
+    </h2>
+
+    <p class="description" id="sureDescription">
+        I just want to make absolutely sure.
+    </p>
+
+    <div class="options">
+
+        <button
+            class="option"
+            onclick="sureYes()">
+
+            Yes, I'm sure.
+
+        </button>
+
+        <button
+            class="option"
+            onclick="sureNo()">
+
+            Hmm... maybe not.
+
+        </button>
+
+    </div>
+
+</section>
+
+
+
+<!-- ==================================================
+     4. PICK A CARD
+================================================== -->
+
+<section class="screen hidden" id="cardsGame">
+
+    <div class="eyebrow">
+        game two
+    </div>
+
+    <h2>
+        Pick a card.
+    </h2>
+
+    <p class="description">
+
+        Each one contains something
+        completely random.
+
+        <br>
+
+        Probably.
+
+    </p>
+
+
+    <div class="card-choice">
+
+        <div
+            class="choice-card"
+            onclick="openCard(this, 1)">
+
+            <div class="card-front">
+                I
+            </div>
+
+            <div class="card-back">
+                You have survived
+                every bad day so far.
+            </div>
+
+        </div>
+
+
+        <div
+            class="choice-card"
+            onclick="openCard(this, 2)">
+
+            <div class="card-front">
+                II
+            </div>
+
+            <div class="card-back">
+                Someone somewhere
+                is quietly rooting for you.
+            </div>
+
+        </div>
+
+
+        <div
+            class="choice-card"
+            onclick="openCard(this, 3)">
+
+            <div class="card-front">
+                III
+            </div>
+
+            <div class="card-back">
+                You are probably
+                doing better than you think.
+            </div>
+
+        </div>
+
+    </div>
+
+    <p
+        class="game-note"
+        id="cardNote">
+
+        Choose one.
+
+    </p>
+
+    <button
+        class="primary hidden"
+        id="cardContinue"
+        onclick="showMemory()">
+
+        Next game →
+
+    </button>
+
+</section>
+
+
+
+<!-- ==================================================
+     5. MEMORY GAME
+================================================== -->
+
+<section class="screen hidden" id="memoryGame">
+
+    <div class="eyebrow">
+        game three
+    </div>
+
+    <h2>
+        Find the two hearts.
+    </h2>
+
+    <p class="description">
+
+        There are two hidden hearts.
+
+        <br>
+
+        Let's see how lucky you are.
+
+    </p>
+
+
+    <div class="memory-grid" id="memoryGrid">
+
+    </div>
+
+    <p
+        class="game-note"
+        id="memoryMessage">
+
+        Find them.
+
+    </p>
+
+</section>
+
+
+
+<!-- ==================================================
+     6. FINAL MESSAGE
+================================================== -->
+
+<section class="screen hidden" id="final">
+
+    <div class="final-symbol">
+        ♡
+    </div>
+
+    <div class="eyebrow">
+        okay, enough games
+    </div>
+
+    <h2>
+        One last thing.
+    </h2>
+
+    <p class="description">
+
+        I know life can get tiring sometimes.
+
+        <br><br>
+
+        And you don't always have to
+        pretend that everything is fine.
+
+        <br><br>
+
+        Whatever you're dealing with,
+        I hope you remember that
+        you don't have to figure
+        everything out at once.
+
+    </p>
+
+
+    <div class="quote">
+
+        “Be strong.
+        I know you can get through
+        everything, even when it gets
+        tiring.
+
+        <br><br>
+
+        Just take things one day
+        at a time.
+
+        <br><br>
+
+        I'm here —
+        quietly rooting for you,
+        and silently proud of you.”
+
+        <div class="quote-author">
+            — someone who cares
+        </div>
+
+    </div>
+
+
+    <button
+        class="primary"
+        onclick="showMusic()">
+
+        There's one more thing →
+
+    </button>
+
+</section>
+
+
+
+<!-- ==================================================
+     7. MUSIC
+================================================== -->
+
+<section class="screen hidden" id="music">
+
+    <div class="eyebrow">
+        for you
+    </div>
+
+    <div class="album">
+        Miss<br>Independent
+    </div>
+
+    <div class="song-title">
+        Miss Independent
+    </div>
+
+    <div class="artist">
+        Ne-Yo
+    </div>
+
+    <p class="song-text">
+
+        No deep meaning.
+
+        <br>
+
+        No explanation.
+
+        <br><br>
+
+        Just a song I thought
+        you might want to hear.
+
+    </p>
+
+    <a
+        href="https://youtu.be/k6M5C-oKw9k?si=L0qp29R70Z9KM6hz"
+        target="_blank"
+        class="song-button">
+
+        ▶ Play song
+
+    </a>
+
+</section>
+
+
+
+<!-- ==================================================
+     8. NOT OKAY
+================================================== -->
+
+<section class="screen hidden" id="comfort">
+
+    <div class="final-symbol">
+        ♡
+    </div>
+
+    <div class="eyebrow">
+        hey
+    </div>
+
+    <h2>
+        It's okay.
+    </h2>
+
+    <p class="description">
+
+        You don't have to explain.
+
+        <br><br>
+
+        You don't have to be okay
+        all the time.
+
+        <br><br>
+
+        Rest if you need to.
+        Take your time.
+
+    </p>
+
+
+    <div class="quote">
+
+        “You don't have to carry
+        everything perfectly.
+
+        <br><br>
+
+        Just keep going.
+        Slowly is still going.”
+
+    </div>
+
+
+    <button
+        class="primary"
+        onclick="showComfortMusic()">
+
+        I have something for you →
+
+    </button>
+
+</section>
+
+
+
+<!-- ==================================================
+     9. COMFORT MUSIC
+================================================== -->
+
+<section class="screen hidden" id="comfortMusic">
+
+    <div class="eyebrow">
+        take your time
+    </div>
+
+    <div
+        class="album"
+        style="
+            background:
+            radial-gradient(
+                circle at 30% 25%,
+                #eee5dc,
+                transparent 30%
+            ),
+            linear-gradient(
+                135deg,
+                #806d61,
+                #3d3029
+            );
+        ">
+
+        sagip
+
+    </div>
+
+    <div class="song-title">
+        sagip
+    </div>
+
+    <div class="artist">
+        a little reminder
+    </div>
+
+    <p class="song-text">
+
+        For whenever things feel
+        a little too heavy.
+
+        <br><br>
+
+        Breathe. You'll get through it.
+
+    </p>
+
+    <a
+        href="https://youtu.be/C43pOpjLLfM?si=G41SM8tvdcWdm-TO"
+        target="_blank"
+        class="song-button">
+
+        ▶ Play song
+
+    </a>
+
+    <br><br>
+
+    <a
+        href="https://youtu.be/-sNgBet587k?si=lhoGIUKgixKLfsd3"
+        target="_blank"
+        class="song-button"
+        style="
+            background: transparent;
+            color: var(--green);
+            border: 1px solid var(--green);
+        ">
+
+        Or listen to Janice
+
+    </a>
+
+</section>
+
+
+</div>
+</div>
+
+
+<script>
+
+/* =====================================================
+   SCREEN MANAGEMENT
+===================================================== */
+
+function showScreen(id) {
+
+    document.querySelectorAll(".screen")
+        .forEach(screen => {
+            screen.classList.add("hidden");
+        });
+
+    const screen =
+        document.getElementById(id);
+
+    screen.classList.remove("hidden");
+
+    screen.style.animation = "none";
+
+    void screen.offsetWidth;
+
+    screen.style.animation =
+        "enter .6s ease";
+}
+
+
+/* =====================================================
+   START
+===================================================== */
+
+function start() {
+
+    showScreen("game1");
+
+}
+
+
+/* =====================================================
+   GAME 1
+===================================================== */
+
+function chooseMood(answer) {
+
+    if(answer === "good") {
+
+        sureStage = 0;
+
+        showScreen("sureGame");
+
+        document.getElementById("sureQuestion")
+            .textContent =
+            "Are you sure?";
+
+        document.getElementById("sureDescription")
+            .textContent =
+            "Because I feel like I should double-check.";
+
+    }
+
+    else if(answer === "okay") {
+
+        showScreen("cardsGame");
+
+    }
+
+    else if(answer === "tired") {
+
+        showScreen("comfort");
+
+    }
+
+    else {
+
+        showScreen("comfort");
+
+    }
+
+}
+
+
+/* =====================================================
+   YES CHAIN
+===================================================== */
+
+let sureStage = 0;
+
+function sureYes() {
+
+    sureStage++;
+
+    const q =
+        document.getElementById("sureQuestion");
+
+    const d =
+        document.getElementById("sureDescription");
+
+
+    if(sureStage === 1) {
+
+        q.textContent =
+            "Very sure?";
+
+        d.textContent =
+            "Okay. I'm just making sure.";
+
+    }
+
+    else if(sureStage === 2) {
+
+        q.textContent =
+            "100% sure?";
+
+        d.textContent =
+            "No pressure. Take your time.";
+
+    }
+
+    else if(sureStage === 3) {
+
+        q.textContent =
+            "Absolutely, completely, definitely sure?";
+
+        d.textContent =
+            "This has become unnecessarily serious.";
+
+    }
+
+    else {
+
+        q.textContent =
+            "Alright. I believe you.";
+
+        d.textContent =
+            "That took longer than expected.";
+
+        setTimeout(() => {
+
+            showScreen("cardsGame");
+
+        }, 1300);
+
+    }
+
+}
+
+
+/* =====================================================
+   SURE NO
+===================================================== */
+
+function sureNo() {
+
+    showScreen("comfort");
+
+    createHearts();
+
+}
+
+
+/* =====================================================
+   CARD GAME
+===================================================== */
+
+let cardOpened = false;
+
+function openCard(card, number) {
+
+    if(cardOpened) return;
+
+    cardOpened = true;
+
+    card.classList.add("open");
+
+
+    document.getElementById("cardNote")
+        .textContent =
+        "Good choice. I think you needed that one.";
+
+
+    document.getElementById("cardContinue")
+        .classList.remove("hidden");
+
+}
+
+
+/* =====================================================
+   MEMORY GAME
+===================================================== */
+
+let heartPositions = [];
+
+let clickedPositions = [];
+
+function showMemory() {
+
+    showScreen("memoryGame");
+
+    createMemoryGame();
+
+}
+
+
+function createMemoryGame() {
+
+    const grid =
+        document.getElementById("memoryGrid");
+
+    grid.innerHTML = "";
+
+    clickedPositions = [];
+
+    heartPositions = [];
+
+
+    while(heartPositions.length < 2) {
+
+        let random =
+            Math.floor(Math.random() * 8);
+
+        if(!heartPositions.includes(random)) {
+
+            heartPositions.push(random);
+
+        }
+
+    }
+
+
+    for(let i = 0; i < 8; i++) {
+
+        const button =
+            document.createElement("button");
+
+        button.className = "memory";
+
+        button.textContent = "?";
+
+        button.onclick = () =>
+            revealMemory(button, i);
+
+        grid.appendChild(button);
+
+    }
+
+}
+
+
+function revealMemory(button, position) {
+
+    if(clickedPositions.includes(position)) {
+        return;
+    }
+
+    clickedPositions.push(position);
+
+
+    if(heartPositions.includes(position)) {
+
+        button.textContent = "♡";
+
+        button.classList.add("revealed");
+
+        document.getElementById("memoryMessage")
+            .textContent =
+            "You found one.";
+
+        if(
+            clickedPositions.filter(
+                x => heartPositions.includes(x)
+            ).length === 2
+        ) {
+
+            document.getElementById("memoryMessage")
+                .textContent =
+                "You found both. Lucky you.";
+
+            setTimeout(() => {
+
+                showScreen("final");
+
+                createHearts();
+
+            }, 1000);
+
+        }
+
+    }
+
+    else {
+
+        button.textContent = "·";
+
+        button.classList.add("revealed");
+
+    }
+
+}
+
+
+/* =====================================================
+   FINAL
+===================================================== */
+
+function showMusic() {
+
+    showScreen("music");
+
+    createHearts();
+
+}
+
+
+/* =====================================================
+   COMFORT
+===================================================== */
+
+function showComfortMusic() {
+
+    showScreen("comfortMusic");
+
+    createHearts();
+
+}
+
+
+/* =====================================================
+   FLOATING SYMBOLS
+===================================================== */
+
+function createHearts() {
+
+    const symbols = [
+        "♡",
+        "✦",
+        "·"
+    ];
+
+
+    for(let i = 0; i < 14; i++) {
+
+        const heart =
+            document.createElement("div");
+
+        heart.className = "heart";
+
+        heart.textContent =
+            symbols[
+                Math.floor(
+                    Math.random() *
+                    symbols.length
+                )
+            ];
+
+
+        heart.style.left =
+            Math.random() * 100 + "vw";
+
+
+        heart.style.fontSize =
+            (10 + Math.random() * 15) + "px";
+
+
+        heart.style.animationDuration =
+            (4 + Math.random() * 4) + "s";
+
+
+        document.body.appendChild(heart);
+
+
+        setTimeout(() => {
+
+            heart.remove();
+
+        }, 8000);
+
+    }
+
+}
+
+</script>
+
+</body>
+</html>
